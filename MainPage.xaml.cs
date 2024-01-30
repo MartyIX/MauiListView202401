@@ -2,23 +2,31 @@
 
 public partial class MainPage : ContentPage
 {
-	int count = 0;
+    public IReadOnlyList<string> availableItems;
 
-	public MainPage()
+    public IReadOnlyList<string> AvailableItems
+    {
+        get => this.availableItems;
+        set
+        {
+            availableItems = value;
+            OnPropertyChanged();
+        }
+    }
+
+
+    public MainPage()
 	{
-		InitializeComponent();
-	}
+        var list = new List<string>(capacity: 10_000);
 
-	private void OnCounterClicked(object sender, EventArgs e)
-	{
-		count++;
+        for (int i = 0; i < 10_000; i++)
+        {
+            list.Add($"#{i}");
+        }
 
-		if (count == 1)
-			CounterBtn.Text = $"Clicked {count} time";
-		else
-			CounterBtn.Text = $"Clicked {count} times";
+        AvailableItems = list;
 
-		SemanticScreenReader.Announce(CounterBtn.Text);
+        InitializeComponent();
+		BindingContext = this;
 	}
 }
-
